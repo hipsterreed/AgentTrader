@@ -6,7 +6,9 @@
     "dev": "bun --watch run src/index.ts",
     "start": "bun run src/index.ts",
     "create-engine": "bun run scripts/create-engine.ts",
-    "typecheck": "tsc --noEmit"
+    "set-voice": "bun --env-file=.env.local run scripts/set-voice.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun --env-file=.env.local test --serial"
   },
   "dependencies": {
     "@elevenlabs/elevenlabs-js": "^2.49.1",

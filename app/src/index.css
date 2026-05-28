@@ -1,111 +1,165 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/* ---------- AgentTrader theme (Tailwind v4 @theme) ----------
+   Locked from inspiration/color-theme.png: glass cards on deep navy,
+   teal-cyan accent with glow. Loss is soft magenta (complements cyan
+   better than red on this palette). */
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* surfaces */
+  --color-bg-0: #07101F;
+  --color-bg-1: #0A1628;
+  --color-bg-2: #0F1F38;
+  --color-surface: #14213B;
+
+  /* brand */
+  --color-accent: #5EEAD4;
+  --color-accent-2: #22D3EE;
+  --color-accent-deep: #1E3A8A;
+
+  /* signals */
+  --color-gain: #5EEAD4;
+  --color-loss: #F472B6;
+  --color-warn: #FBBF24;
+
+  /* text */
+  --color-text: #F1F5F9;
+  --color-text-muted: #94A3B8;
+  --color-text-dim: #64748B;
+
+  /* radii */
+  --radius-card: 14px;
+
+  /* shadcn-mapped tokens — colors below use our palette */
+  --color-background: #0A1628;
+  --color-foreground: #F1F5F9;
+  --color-card: rgba(26, 43, 74, 0.55);
+  --color-card-foreground: #F1F5F9;
+  --color-popover: #14213B;
+  --color-popover-foreground: #F1F5F9;
+  --color-primary: #5EEAD4;
+  --color-primary-foreground: #07101F;
+  --color-secondary: #14213B;
+  --color-secondary-foreground: #F1F5F9;
+  --color-muted: #14213B;
+  --color-muted-foreground: #94A3B8;
+  --color-border: rgba(94, 234, 212, 0.18);
+  --color-input: rgba(148, 163, 184, 0.12);
+  --color-ring: #5EEAD4;
+  --color-destructive: #F472B6;
 }
 
-@media (prefers-color-scheme: dark) {
+/* radius helper used by shadcn components */
+@layer base {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    --radius: 0.75rem;
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+/* ---------- globals ---------- */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-body {
-  margin: 0;
-}
+  html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
+  html {
+    color-scheme: dark;
+  }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(20, 42, 71, 0.6), transparent 70%),
+      radial-gradient(ellipse 80% 60% at 100% 100%, rgba(94, 234, 212, 0.04), transparent 60%),
+      var(--color-bg-1);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+  }
+
+  #root {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100svh;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+
+/* ---------- utility classes ---------- */
+@utility glass {
+  background: color-mix(in oklab, var(--color-surface) 60%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--color-border);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+@utility glow-accent {
+  box-shadow: 0 0 24px color-mix(in oklab, var(--color-accent) 35%, transparent);
+}
+@utility glow-accent-soft {
+  box-shadow: 0 0 16px color-mix(in oklab, var(--color-accent) 20%, transparent);
+}
+@utility glow-accent-strong {
+  box-shadow:
+    0 0 30px color-mix(in oklab, var(--color-accent) 50%, transparent),
+    0 0 60px color-mix(in oklab, var(--color-accent) 25%, transparent);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* tabular numerals helper for prices/PnL */
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
 }
+
+/* ---------- orb animations ---------- */
+@keyframes orb-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.14); }
+}
+@keyframes orb-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.18); }
+}
+@keyframes orb-glow-slow {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%      { opacity: 0.7; transform: scale(1.08); }
+}
+@keyframes orb-connect {
+  0%   { transform: scale(0.95); opacity: 0.7; }
+  50%  { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+@keyframes orb-wave {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
+}
+
+/* Used by BlockGrid (broll Brand-Reveal floor tiles) — gentle opacity
+   breathing on a subset of tiles for liveness. */
+@keyframes block-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+
+/* slim scrollbar matching the palette */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: color-mix(in oklab, var(--color-accent) 15%, transparent); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--color-accent) 30%, transparent); }
