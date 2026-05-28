@@ -1,6 +1,5 @@
-﻿import { Settings, Activity, MoonStar } from 'lucide-react'
+﻿import { Activity } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -45,14 +44,6 @@ export function Topbar({ marketOpen, connected, connecting }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center gap-1">
-        <Button variant="ghost" size="icon" aria-label="Theme">
-          <MoonStar className="size-4" />
-        </Button>
-        <Button variant="ghost" size="icon" aria-label="Settings">
-          <Settings className="size-4" />
-        </Button>
-      </div>
     </header>
   )
 }
