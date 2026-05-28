@@ -3,22 +3,27 @@ import { ConversationProvider } from '@elevenlabs/react'
 import { AgentTraderShell } from './components/voice-agent'
 import { Presentation } from './presentation/Presentation'
 import { Broll } from './presentation/Broll'
+import { Landing } from './presentation/Landing'
 import { Toaster } from './components/ui/sonner'
 
-type Route = 'app' | 'present' | 'broll'
+type Route = 'landing' | 'agent' | 'present' | 'broll'
 
 const routeFromHash = (): Route => {
-  if (typeof window === 'undefined') return 'app'
+  if (typeof window === 'undefined') return 'landing'
   const h = window.location.hash
   if (h.startsWith('#/present')) return 'present'
   if (h.startsWith('#/broll')) return 'broll'
-  return 'app'
+  if (h.startsWith('#/agent')) return 'agent'
+  return 'landing'
 }
 
 function App() {
-  // Hash-based route switch — no router dep just to mount sibling marketing
-  // pages. /#/present is the self-running trailer. /#/broll is the manual
-  // B-roll page for the founder-pitch video. Bare / mounts the live agent.
+  // Hash-based route switch — no router dep. Public site:
+  //   /         → Landing (brand reveal cover with CTA)
+  //   #/agent   → AgentTraderShell (live voice agent)
+  // Marketing-only:
+  //   #/present → 35s self-running trailer
+  //   #/broll   → manual B-roll page for the founder-pitch video
   const [route, setRoute] = useState<Route>(routeFromHash)
   useEffect(() => {
     const onHash = () => setRoute(routeFromHash())
@@ -30,7 +35,8 @@ function App() {
     <ConversationProvider>
       {route === 'present' ? <Presentation /> :
        route === 'broll'   ? <Broll />        :
-       <AgentTraderShell />}
+       route === 'agent'   ? <AgentTraderShell /> :
+       <Landing />}
       <Toaster />
     </ConversationProvider>
   )

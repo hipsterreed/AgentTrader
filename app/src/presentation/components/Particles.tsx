@@ -18,24 +18,38 @@ function rng(seed: number): number {
   return v / 233280
 }
 
-export function Particles({ count = 12 }: Props) {
+export function Particles({ count = 28 }: Props) {
   const particles = useMemo(() => {
+    // Quasi-grid scatter: divide the viewport into roughly-square cells, put
+    // one particle per cell, then jitter within the cell. Guarantees uniform
+    // distribution — no clumping in some regions while others sit empty.
+    const cols = Math.ceil(Math.sqrt(count * 1.6))
+    const rows = Math.ceil(count / cols)
+    const cellW = 100 / cols
+    const cellH = 100 / rows
+
     return Array.from({ length: count }, (_, i) => {
-      const r = (n: number) => rng(i * 17 + n)
+      const r = (n: number) => rng(i * 31 + n)
       const isPink = r(1) < 0.5
-      // Drift up to ±140px in either axis. Two-leg path so motion feels
+      const col = i % cols
+      const row = Math.floor(i / cols)
+      // Jitter 0–80% within the cell, so particles stay scattered but never
+      // line up on a grid.
+      const cellX = (col + 0.1 + r(11) * 0.8) * cellW
+      const cellY = (row + 0.1 + r(12) * 0.8) * cellH
+      // Drift up to ±150px in either axis. Two-leg path so motion feels
       // organic — not a straight line, but a wandering loop.
-      const driftAx = (r(2) - 0.5) * 280
-      const driftAy = (r(3) - 0.5) * 280
-      const driftBx = (r(4) - 0.5) * 280
-      const driftBy = (r(5) - 0.5) * 280
+      const driftAx = (r(2) - 0.5) * 300
+      const driftAy = (r(3) - 0.5) * 300
+      const driftBx = (r(4) - 0.5) * 300
+      const driftBy = (r(5) - 0.5) * 300
       return {
         id: i,
-        leftPct: 8 + r(6) * 84,                 // spawn 8–92% across width
-        topPct: 15 + r(7) * 70,                 // 15–85% down (avoid extremes)
-        sizePx: 3 + r(8) * 4,                   // 3–7 px
-        durationSec: 12 + r(9) * 10,            // 12–22 s per loop
-        delaySec: -(r(10) * 22),                // negative = phase offset
+        leftPct: cellX,
+        topPct: cellY,
+        sizePx: 2 + r(8) * 5,                   // 2–7 px
+        durationSec: 11 + r(9) * 12,            // 11–23 s per loop
+        delaySec: -(r(10) * 23),                // negative = phase offset
         driftAx, driftAy, driftBx, driftBy,
         color: isPink ? '#FF6FBE' : '#5EEAD4',
         glow: isPink ? 'rgba(255,111,190,0.7)' : 'rgba(94,234,212,0.7)',

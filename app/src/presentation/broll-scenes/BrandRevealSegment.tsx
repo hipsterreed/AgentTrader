@@ -12,6 +12,7 @@
 //   7. Orb (with --color-loss override → brighter pink throughout)
 
 import { motion } from 'motion/react'
+import { ArrowRight } from 'lucide-react'
 import { VoiceOrb } from '@/components/voice-orb'
 import { BrandMark } from '../components/BrandMark'
 import { Particles } from '../components/Particles'
@@ -30,7 +31,10 @@ export function BrandRevealSegment({ loopKey }: Props) {
         // Gentle camera breathing — symmetric, so a GIF loops with no seam.
         animate={{ scale: [1.0, 1.06, 1.0] }}
         transition={{ duration: 8, ease: 'easeInOut', repeat: Infinity }}
-        className="relative flex flex-col items-center gap-9 text-center"
+        // Negative margin-top pulls the focal stack up from dead-center so
+        // there's breathing room for the side cards and cube floor below.
+        style={{ marginTop: '-24vh' }}
+        className="relative flex flex-col items-center gap-9 text-center z-10"
       >
         {/* Big back-of-frame halo — teal core with a magenta outer ring,
             both breathing in counter-rhythm for chromatic depth. */}
@@ -129,17 +133,44 @@ export function BrandRevealSegment({ loopKey }: Props) {
               state="idle"
               onTap={() => {}}
               size="lg"
-              // Brighter hot-pink TAP TO TALK with a soft glow so it pops in
-              // the GIF cover. Only the brand-reveal segment overrides this;
-              // the live app's "Tap to talk" stays the default muted gray.
-              labelStyle={{
-                color: '#FF3FA8',
-                textShadow:
-                  '0 0 14px rgba(255, 63, 168, 0.55), 0 0 4px rgba(255, 63, 168, 0.85)',
-              }}
+              // Hide the built-in "TAP TO TALK" label — the CTA button below
+              // takes over that role for the cover.
+              labelStyle={{ display: 'none' }}
             />
           </motion.div>
         </div>
+
+        {/* Get Started CTA — teal gradient pill, contrasts the pink orb.
+            Navigates to the live agent route. */}
+        <motion.button
+          type="button"
+          onClick={() => { window.location.hash = '#/agent' }}
+          initial={{ opacity: 0, y: 12, scale: 0.92 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: { delay: 1.1, duration: 0.55, type: 'spring', stiffness: 240, damping: 20 },
+          }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="flex items-center gap-2.5 cursor-pointer font-semibold"
+          style={{
+            background:
+              'linear-gradient(135deg, #5EEAD4 0%, #22D3EE 100%)',
+            color: '#07101F',
+            padding: '14px 30px',
+            borderRadius: '9999px',
+            fontSize: '15px',
+            letterSpacing: '0.01em',
+            border: '1px solid rgba(255,255,255,0.25)',
+            boxShadow:
+              '0 0 38px color-mix(in oklab, var(--color-accent) 55%, transparent), 0 14px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.35)',
+          }}
+        >
+          Get started
+          <ArrowRight size={17} strokeWidth={2.5} />
+        </motion.button>
       </motion.div>
     </>
   )

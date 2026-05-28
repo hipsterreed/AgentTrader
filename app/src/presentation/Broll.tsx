@@ -18,6 +18,7 @@ import { Maximize2, MonitorSmartphone } from 'lucide-react'
 
 import { AmbientGrid } from '@/components/ambient-grid'
 import { BlockGrid } from './components/BlockGrid'
+import { SideCards } from './components/SideCards'
 import { BrandRevealSegment } from './broll-scenes/BrandRevealSegment'
 import { PortfolioCheckSegment } from './broll-scenes/PortfolioCheckSegment'
 import { MarketAnalysisSegment } from './broll-scenes/MarketAnalysisSegment'
@@ -118,18 +119,20 @@ export function Broll() {
       />
 
       {/* Brand-reveal-only: floor of translucent glass tiles (landing.png
-          inspiration). Sits between the ambient backdrop and the segment
-          stage. AnimatePresence crossfades it when leaving the segment. */}
+          inspiration) + collage of product cards peeking in from the corners.
+          Sit between the ambient backdrop and the focal composition.
+          AnimatePresence crossfades them when leaving the segment. */}
       <AnimatePresence>
         {segment.id === 'brand' && (
           <motion.div
-            key="block-grid"
+            key="brand-bg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.6 } }}
             exit={{ opacity: 0, transition: { duration: 0.4 } }}
             className="absolute inset-0"
           >
             <BlockGrid heightPct={65} />
+            <SideCards />
           </motion.div>
         )}
       </AnimatePresence>
