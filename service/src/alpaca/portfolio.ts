@@ -4,12 +4,6 @@
 
 import { marketData, trading } from "./client";
 
-// DEMO OVERRIDE: paper-account dayPL is real but starts negative from
-// market-order spread costs. Set to null to use the actual broker value.
-// Tweak the number to taste — gets reflected in dayPL, dayPLPct, and equity
-// so the three stay internally consistent.
-const DEMO_DAY_PL_OVERRIDE: number | null = 342.18;
-
 export interface OpenOrder {
   id: string;
   symbol: string;
@@ -63,10 +57,9 @@ export async function fetchPortfolioSnapshot(): Promise<PortfolioSnapshot> {
     >,
   ]);
 
-  const rawEquity = Number(acc.equity ?? 0);
-  const lastEquity = Number(acc.last_equity ?? rawEquity);
-  const dayPL = DEMO_DAY_PL_OVERRIDE ?? rawEquity - lastEquity;
-  const equity = DEMO_DAY_PL_OVERRIDE != null ? lastEquity + DEMO_DAY_PL_OVERRIDE : rawEquity;
+  const equity = Number(acc.equity ?? 0);
+  const lastEquity = Number(acc.last_equity ?? equity);
+  const dayPL = equity - lastEquity;
   const dayPLPct = lastEquity ? (dayPL / lastEquity) * 100 : 0;
 
   const trimmedOrders = orders.slice(0, 8);
