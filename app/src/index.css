@@ -158,6 +158,35 @@
   50%      { opacity: 0.55; }
 }
 
+/* Diagonal ripple wave for the Brand-Reveal cube floor. Every tile runs this
+   animation with a position-dependent delay, producing a continuous wave that
+   travels across the grid. Uses filter rather than opacity so the per-tile
+   base alpha (set inline via backgroundColor hsla) is preserved. */
+@keyframes block-ripple {
+  0%, 100% {
+    transform: scale(1) translateZ(0);
+    filter: brightness(0.95) saturate(1);
+  }
+  50% {
+    transform: scale(1.06) translateZ(0);
+    filter: brightness(1.55) saturate(1.25);
+  }
+}
+
+/* Same timing as block-ripple but with bigger amplitude — used by the "spark"
+   tiles (the magenta/pink ones) so they pop harder when the wave hits them. */
+@keyframes block-spark {
+  0%, 100% {
+    transform: scale(1) translateZ(0);
+    filter: brightness(1.1) saturate(1.4);
+  }
+  50% {
+    transform: scale(1.22) translateZ(0);
+    filter: brightness(2.6) saturate(1.9);
+  }
+}
+
+
 /* slim scrollbar matching the palette */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

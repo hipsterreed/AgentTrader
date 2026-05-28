@@ -23,6 +23,11 @@ interface Props {
   onTap: () => void
   disabled?: boolean
   size?: 'sm' | 'md' | 'lg'
+  /** Optional inline-style overrides for the status label (text below orb).
+   *  Used by the Brand-Reveal segment to brighten "TAP TO TALK". Only applied
+   *  in non-active states; active (listening/speaking) keeps its built-in
+   *  loss-color styling so the live app behavior is unchanged. */
+  labelStyle?: React.CSSProperties
 }
 
 const STATUS_LABEL: Record<OrbState, string> = {
@@ -118,22 +123,24 @@ const DotGrid = memo(function DotGrid({ state }: { state: OrbState }) {
     >
       {CELLS.map(({ x, y }, i) => (
         // No `opacity` in JSX — rAF owns it. React would otherwise overwrite
-        // our DOM writes on every parent re-render.
+        // our DOM writes on every parent re-render. `fill` and the filter
+        // both pull from var(--color-loss) so a parent style override (used
+        // by the brand-reveal segment) restyles the entire grid.
         <circle
           key={i}
           data-dot
           cx={x + PADDING}
           cy={y + PADDING}
           r={DOT_R}
-          fill="#F472B6"
-          style={{ filter: 'drop-shadow(0 0 0.4px rgba(244,114,182,0.8))' }}
+          fill="var(--color-loss)"
+          style={{ filter: 'drop-shadow(0 0 0.6px color-mix(in oklab, var(--color-loss) 85%, transparent))' }}
         />
       ))}
     </svg>
   )
 })
 
-export function VoiceOrb({ state, onTap, disabled, size = 'md' }: Props) {
+export function VoiceOrb({ state, onTap, disabled, size = 'md', labelStyle }: Props) {
   const px = SIZE_PX[size]
   const active = state === 'listening' || state === 'speaking'
 
@@ -187,6 +194,7 @@ export function VoiceOrb({ state, onTap, disabled, size = 'md' }: Props) {
           'text-[10.5px] tracking-[0.22em] uppercase font-semibold transition-colors',
           active ? 'text-[var(--color-loss)]' : 'text-[var(--color-text-muted)]',
         )}
+        style={!active ? labelStyle : undefined}
       >
         {STATUS_LABEL[state]}
       </div>
