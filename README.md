@@ -17,6 +17,8 @@ Built for the **ElevenLabs hackathon** ([#ElevenHacks](https://elevenlabs.io/hac
 
 📹 **[Demo video →](#)** &nbsp;·&nbsp; 🌐 **[Live demo →](#)** &nbsp;·&nbsp; 📝 **[Submission writeup →](.hackathon/submission.md)**
 
+<img width="426" height="240" alt="hack10_gif1" src="https://github.com/user-attachments/assets/bd4086d0-baef-488e-81e9-bf60840cdf5c" />
+
 ---
 
 ## What it is
